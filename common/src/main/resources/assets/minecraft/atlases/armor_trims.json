@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "trims/entity/horse_body",
+      "prefix": "trims/entity/horse_body/"
+    },
+    {
+      "type": "directory",
+      "source": "trims/entity/wolf_body",
+      "prefix": "trims/entity/wolf_body/"
+    }
+  ]
+}
