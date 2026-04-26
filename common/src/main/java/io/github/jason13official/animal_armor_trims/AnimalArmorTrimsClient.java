@@ -54,11 +54,11 @@ public class AnimalArmorTrimsClient {
     });
   }
 
-  private static ResourceLocation horseTextureLocation(String material, String pattern) {
+  public static ResourceLocation horseTextureLocation(String material, String pattern) {
     return ResourceLocation.withDefaultNamespace("textures/trims/entity/horse_body/pattern_material.png".replace("material", material).replace("pattern", pattern));
   }
 
-  private static ResourceLocation wolfTextureLocation(String material, String pattern) {
+  public static ResourceLocation wolfTextureLocation(String material, String pattern) {
     return ResourceLocation.withDefaultNamespace("textures/trims/entity/wolf_body/pattern_material.png".replace("material", material).replace("pattern", pattern));
   }
 }
