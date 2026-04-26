@@ -1,13 +1,16 @@
 package io.github.jason13official.animal_armor_trims.mixin;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.jason13official.animal_armor_trims.impl.client.api.renderer.entity.state.HorseArmorRenderStateAccessor;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.state.HorseRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -48,7 +51,16 @@ public abstract class FabricLivingEntityRendererMixin<T extends LivingEntity, S 
 
     if (horse.getBodyArmorItem().has(DataComponents.TRIM) && horse.getBodyArmorItem().has(DataComponents.PROVIDES_TRIM_MATERIAL) ) {
 
+      // get trim from bodyArmor or default to quartz material + sentry pattern
       armorAccessor.animal_armor_trims$setArmorTrim(horse.getBodyArmorItem().getOrDefault(DataComponents.TRIM, new ArmorTrim(trimMaterials.getOrThrow(TrimMaterials.QUARTZ), trimPatterns.getOrThrow(TrimPatterns.SENTRY))));
     }
+  }
+
+  @Inject(at = @At("TAIL"), method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V")
+  private void animal_armor_trims$submit(S state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
+
+    if (!(state instanceof HorseRenderState horseRenderState)) return;
+
+    HorseArmorRenderStateAccessor armorAccessor = (HorseArmorRenderStateAccessor) horseRenderState;
   }
 }
