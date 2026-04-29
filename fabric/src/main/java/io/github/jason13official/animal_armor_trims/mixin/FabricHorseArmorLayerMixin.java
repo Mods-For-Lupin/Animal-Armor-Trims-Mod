@@ -3,7 +3,7 @@ package io.github.jason13official.animal_armor_trims.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.jason13official.animal_armor_trims.AnimalArmorTrimsClient;
-import java.util.concurrent.ExecutionException;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HorseModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -45,22 +45,32 @@ public class FabricHorseArmorLayerMixin {
     }
 
     try {
-      // VertexConsumer vertexConsumer = HorseRenderLayerHelper.createVertexConsumer(trim, buffer);
-      var rl = ResourceLocation.tryBuild("minecraft",
-          AnimalArmorTrimsClient.horseTextureLocation(trim.material().getRegisteredName().replace("minecraft:", ""), trim.pattern().getRegisteredName().replace("minecraft:", "")).getPath());
+
+      ResourceLocation patternLocation = trim.pattern().value().assetId(); // maybe have alternate namespace
+      String materialName = trim.material().value().assetName(); // assumed to be in vanilla namespace
+
+
+      var rl = ResourceLocation.tryBuild("minecraft", AnimalArmorTrimsClient.horseTextureLocation(materialName, patternLocation.getPath()).getPath());
 
       if (rl == null) {
         return;
       }
 
-      // default if invalid
+      if (AnimalArmorTrimsClient.KNOWN_MISSING.contains(rl) ||
+          Minecraft.getInstance().getResourceManager().getResource(rl).isEmpty()) {
+        AnimalArmorTrimsClient.KNOWN_MISSING.add(rl);
+        return;
+      }
+
       VertexConsumer vertexConsumer = AnimalArmorTrimsClient.HORSE_CACHE.get(trim, () -> buf -> buf.getBuffer(RenderType.armorCutoutNoCull(rl))).apply(buffer);
 
       if (vertexConsumer != null) {
+        poseStack.pushPose();
         this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.popPose();
       }
-    } catch (ExecutionException e) {
-      System.out.println("failed to render horse armor trim...");
+    } catch (Exception e) {
+      System.out.println("failed to render horse armor trim... " + e.getMessage());
     }
   }
 }
