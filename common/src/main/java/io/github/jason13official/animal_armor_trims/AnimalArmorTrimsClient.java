@@ -3,8 +3,6 @@ package io.github.jason13official.animal_armor_trims;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Function;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.client.Minecraft;
@@ -22,7 +20,8 @@ public class AnimalArmorTrimsClient {
 
   public static Cache<ArmorTrim, Function<MultiBufferSource, VertexConsumer>> HORSE_CACHE = CacheBuilder.newBuilder().build();
   public static Cache<ArmorTrim, Function<MultiBufferSource, VertexConsumer>> WOLF_CACHE = CacheBuilder.newBuilder().build();
-  public static Set<ResourceLocation> KNOWN_MISSING = new HashSet<>();
+  public static final ResourceLocation HORSE_FALLBACK_RL = horseTextureLocation("diamond", "coast");
+  public static final ResourceLocation WOLF_FALLBACK_RL = wolfTextureLocation("diamond", "coast");
 
   public static void init() {
   }
@@ -35,7 +34,6 @@ public class AnimalArmorTrimsClient {
     Registry<TrimMaterial> materials = mc.level.registryAccess().registryOrThrow(Registries.TRIM_MATERIAL);
     Registry<TrimPattern> patterns = mc.level.registryAccess().registryOrThrow(Registries.TRIM_PATTERN);
 
-    KNOWN_MISSING.clear();
     HORSE_CACHE.invalidateAll();
     WOLF_CACHE.invalidateAll();
 
@@ -53,19 +51,15 @@ public class AnimalArmorTrimsClient {
             if (rl2 != null) {
               patterns.getHolder(rl2).ifPresent(patternReference -> {
 
+                ArmorTrim armorTrim = new ArmorTrim(materialReference, patternReference);
+
                 ResourceLocation horseTex = horseTextureLocation(trimMaterial.assetName(), trimPattern.assetId().getPath());
-                if (mc.getResourceManager().getResource(horseTex).isPresent()) {
-                  HORSE_CACHE.put(new ArmorTrim(materialReference, patternReference), buffer -> buffer.getBuffer(RenderType.armorCutoutNoCull(horseTex)));
-                } else {
-                  KNOWN_MISSING.add(horseTex);
-                }
+                ResourceLocation effectiveHorseTex = mc.getResourceManager().getResource(horseTex).isPresent() ? horseTex : horseTextureLocation(trimMaterial.assetName(), "coast");
+                HORSE_CACHE.put(armorTrim, buffer -> buffer.getBuffer(RenderType.armorCutoutNoCull(effectiveHorseTex)));
 
                 ResourceLocation wolfTex = wolfTextureLocation(trimMaterial.assetName(), trimPattern.assetId().getPath());
-                if (mc.getResourceManager().getResource(wolfTex).isPresent()) {
-                  WOLF_CACHE.put(new ArmorTrim(materialReference, patternReference), buffer -> buffer.getBuffer(RenderType.armorCutoutNoCull(wolfTex)));
-                } else {
-                  KNOWN_MISSING.add(wolfTex);
-                }
+                ResourceLocation effectiveWolfTex = mc.getResourceManager().getResource(wolfTex).isPresent() ? wolfTex : wolfTextureLocation(trimMaterial.assetName(), "coast");
+                WOLF_CACHE.put(armorTrim, buffer -> buffer.getBuffer(RenderType.armorCutoutNoCull(effectiveWolfTex)));
               });
             }
           });
