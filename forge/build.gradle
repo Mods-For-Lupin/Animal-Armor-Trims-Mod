@@ -48,6 +48,9 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 dependencies {
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+
+    modImplementation("curse.maven:platform-997634:7830508")
+    modImplementation("curse.maven:vanillabackport-417430:7830642")
 }
 
 jar {

@@ -7,13 +7,17 @@
   "mixins": [
   ],
   "client": [
+    "FabricClientPacketListenerMixin",
     "FabricHorseArmorLayerMixin",
-    "FabricTitleScreenMixin"
+    "FabricReloadableServerResourcesMixin",
+    "FabricTitleScreenMixin",
+    "FabricWolfArmorLayerMixin"
   ],
   "server": [
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "io.github.jason13official.animal_armor_trims.AnimalArmorTrimsMixinConfigFabric"
 }
   

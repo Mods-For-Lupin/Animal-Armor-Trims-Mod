@@ -7,16 +7,20 @@ import io.github.jason13official.animal_armor_trims.impl.common.registry.ModMenu
 import io.github.jason13official.animal_armor_trims.impl.common.registry.ModParticles;
 import io.github.jason13official.animal_armor_trims.impl.common.registry.ModTabs;
 import io.github.jason13official.animal_armor_trims.impl.common.registry.ModTiles;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.tags.ItemTags;
 
 public class AnimalArmorTrimsFabric implements ModInitializer {
 

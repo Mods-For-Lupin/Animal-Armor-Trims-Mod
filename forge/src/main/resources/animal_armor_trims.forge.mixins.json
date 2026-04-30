@@ -8,11 +8,13 @@
   ],
   "client": [
     "ForgeHorseArmorLayerMixin",
-    "ForgeTitleScreenMixin"
+    "ForgeTitleScreenMixin",
+    "ForgeWolfArmorLayerMixin"
   ],
   "server": [
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "io.github.jason13official.animal_armor_trims.AnimalArmorTrimsMixinConfigForge"
 }
