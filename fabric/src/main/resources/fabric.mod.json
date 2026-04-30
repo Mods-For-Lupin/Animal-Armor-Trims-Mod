@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.jason13official.examplemod.ExampleModFabric"
+      "io.github.jason13official.animal_armor_trims.AnimalArmorTrimsFabric"
     ],
     "client": [
-      "io.github.jason13official.examplemod.ExampleModClientFabric"
+      "io.github.jason13official.animal_armor_trims.AnimalArmorTrimsClientFabric"
     ]
   },
   "mixins": [
