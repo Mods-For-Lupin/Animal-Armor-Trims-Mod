@@ -47,8 +47,13 @@ public class ForgeHorseArmorLayerMixin {
 
     try {
 
-      var rl = AnimalArmorTrimsClient.horseTextureLocation(trim.material().value().assetName(), trim.pattern().value().assetId().getPath());
-      VertexConsumer vertexConsumer = AnimalArmorTrimsClient.HORSE_CACHE.get(trim, () -> buf -> buf.getBuffer(RenderType.armorCutoutNoCull(rl))).apply(buffer);
+      String material = trim.material().value().assetName();
+      String pattern = trim.pattern().value().assetId().getPath();
+      String cacheKey = pattern + "_" + material;
+      var rl = AnimalArmorTrimsClient.horseTextureLocation(material, pattern);
+      var mc = Minecraft.getInstance();
+      var effectiveRl = mc.getResourceManager().getResource(rl).isPresent() ? rl : AnimalArmorTrimsClient.horseTextureLocation(material, "coast");
+      VertexConsumer vertexConsumer = AnimalArmorTrimsClient.HORSE_CACHE.get(cacheKey, () -> buf -> buf.getBuffer(RenderType.armorCutoutNoCull(effectiveRl))).apply(buffer);
 
       if (vertexConsumer != null) {
         this.model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
