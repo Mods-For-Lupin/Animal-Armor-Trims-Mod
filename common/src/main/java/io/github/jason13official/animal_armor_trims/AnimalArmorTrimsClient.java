@@ -63,7 +63,18 @@ public class AnimalArmorTrimsClient {
                   ArmorTrim armorTrim = new ArmorTrim(optionalMaterial.get(), optionalPattern.get());
 
                   ResourceLocation horseTex = horseTextureLocation(trimMaterial.assetName(), trimPattern.assetId().getPath());
+
+                  System.out.println("Attempting to create full location of " + horseTex.toString());
+                  Constants.LOG.info("Attempting to create full location of {}", horseTex.toString());
+
+                  System.out.println("resource manager located? " + String.valueOf(mc.getResourceManager().getResource(horseTex).isPresent()));
+                  Constants.LOG.info("resource manager located? {}", String.valueOf(mc.getResourceManager().getResource(horseTex).isPresent()));
+
                   ResourceLocation effectiveHorseTex = mc.getResourceManager().getResource(horseTex).isPresent() ? horseTex : horseTextureLocation(trimMaterial.assetName(), "coast");
+
+                  System.out.println("effective texture? " + effectiveHorseTex.toString());
+                  Constants.LOG.info("effective texture? {}", effectiveHorseTex.toString());
+
                   HORSE_CACHE.put(armorTrim, buffer -> buffer.getBuffer(RenderType.armorCutoutNoCull(effectiveHorseTex)));
 
                   ResourceLocation wolfTex = wolfTextureLocation(trimMaterial.assetName(), trimPattern.assetId().getPath());
