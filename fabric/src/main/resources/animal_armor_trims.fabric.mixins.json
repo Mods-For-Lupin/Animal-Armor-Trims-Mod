@@ -7,9 +7,7 @@
   "mixins": [
   ],
   "client": [
-    "FabricClientPacketListenerMixin",
     "FabricHorseArmorLayerMixin",
-    "FabricReloadableServerResourcesMixin",
     "FabricTitleScreenMixin",
     "FabricWolfArmorLayerMixin"
   ],

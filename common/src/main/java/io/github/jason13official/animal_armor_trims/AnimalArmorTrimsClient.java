@@ -40,11 +40,11 @@ public class AnimalArmorTrimsClient {
         String cacheKey = trimPattern.assetId().getPath() + "_" + trimMaterial.assetName();
 
         ResourceLocation horseTex = horseTextureLocation(trimMaterial.assetName(), trimPattern.assetId().getPath());
-        Constants.LOG.info("Attempting to create full location of {}", horseTex);
+        // Constants.LOG.info("Attempting to create full location of {}", horseTex);
         boolean horseFound = mc.getResourceManager().getResource(horseTex).isPresent();
-        Constants.LOG.info("resource manager located? {}", horseFound);
+        // Constants.LOG.info("resource manager located? {}", horseFound);
         ResourceLocation effectiveHorseTex = horseFound ? horseTex : horseTextureLocation(trimMaterial.assetName(), "coast");
-        Constants.LOG.info("effective texture? {}", effectiveHorseTex);
+        // Constants.LOG.info("effective texture? {}", effectiveHorseTex);
         HORSE_CACHE.put(cacheKey, buffer -> buffer.getBuffer(RenderType.armorCutoutNoCull(effectiveHorseTex)));
 
         ResourceLocation wolfTex = wolfTextureLocation(trimMaterial.assetName(), trimPattern.assetId().getPath());

@@ -8,10 +8,12 @@ import io.github.jason13official.animal_armor_trims.impl.common.registry.ModMenu
 import io.github.jason13official.animal_armor_trims.impl.common.registry.ModParticles;
 import io.github.jason13official.animal_armor_trims.impl.common.registry.ModTabs;
 import io.github.jason13official.animal_armor_trims.impl.common.registry.ModTiles;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -20,7 +22,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
@@ -69,16 +73,6 @@ public class AnimalArmorTrimsForge {
     if (FMLLoader.getDist() == Dist.CLIENT) {
       new AnimalArmorTrimsClientForge(EVENT_BUS);
     }
-
-    MinecraftForge.EVENT_BUS.addListener((Consumer<TagsUpdatedEvent>) event -> {
-
-      if (ModList.get().isLoaded("vanillabackport")) {
-        Constants.LOG.info("adding wolf armor to trimmable armor tag, cause: Mod Id 'vanillabackport' loaded");
-        event.getRegistryAccess().registry(ItemTags.TRIMMABLE_ARMOR.registry()).ifPresent(reg -> {
-          reg.bindTags(Map.of(ItemTags.TRIMMABLE_ARMOR, List.of(BuiltInRegistries.ITEM.wrapAsHolder(com.blackgear.vanillabackport.common.registries.ModItems.WOLF_ARMOR.get()))));
-        });
-      }
-    });
   }
 
   public <T> void bind(ResourceKey<Registry<T>> registryKey, Consumer<BiConsumer<T, ResourceLocation>> source) {
